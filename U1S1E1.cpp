@@ -3,16 +3,24 @@
 using namespace std;
 
 int main() {
-    string firstname;
-    string lastname; 
+    string name; 
+    int ticket;
+    int price = rand() %51 + 50;
 
-    cout << "Enter your first name: ";
-    cin >> firstname;
+    char letters[] = {'A', 'B', 'C', 'D'};
 
-    cout << "Enter your last name: ";
-    cin >> lastname;
+    cout << "What is your name? " << endl;
+    getline(cin, name);
 
-    cout << "Hello, " << firstname << " " << lastname << "!" << endl;
+    srand(time(0));
+    ticket = rand() %200 + 1;
+
+printf("|------------------------------------|\n")
+printf("|Name: Bruce Banner |\n")
+printf("|Section: A |\n")
+printf("|Seat: 123 |\n")
+printf("|Price: $83 |\n")
+printf("|------------------------------------|\n")
 
     return 0;
 }

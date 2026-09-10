@@ -15,12 +15,12 @@ int main() {
     srand(time(0));
     ticket = rand() %200 + 1;
 
-printf("|------------------------------------|\n")
-printf("|Name: Bruce Banner |\n")
-printf("|Section: A |\n")
-printf("|Seat: 123 |\n")
-printf("|Price: $83 |\n")
-printf("|------------------------------------|\n")
+printf("|------------------------------------|\n");
+printf("|Name: %s |\n", name.c_str());
+printf("|Section: %c |\n", letters[rand() % 4]);
+printf("|Seat: %d |\n", ticket);
+printf("|Price: $%d |\n", price);
+printf("|------------------------------------|\n");
 
     return 0;
 }

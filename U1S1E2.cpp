@@ -25,7 +25,7 @@ int main()
         name = name.substr(0, 25);
     }
 
-    cout << "Hey there, " << name << "! How's it going?" << endl;
+    cout << "Hey there, " << name << "! Here is your ticket" << endl;
 
     cout << "|---------------------------|" << endl;
     printf("| %-25s |\n", name.c_str());

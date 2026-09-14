@@ -1,26 +1,32 @@
 #include <iostream>
-
+#include <ctime>
 using namespace std;
 
-int main() {
-    string name; 
+int main()
+{
+    string name;
     int ticket;
     int price = rand() %51 + 50;
-
+    
     char letters[] = {'A', 'B', 'C', 'D'};
+    int index = rand() % 4;
 
-    cout << "What is your name? " << endl;
+    cout << "What is your name?" << endl;
     getline(cin, name);
 
-    srand(time(0));
+    cout << "Hey there, " << name << "! How's it going?" << endl;
+
+    srand(time(0)); // so it doesnt start at the same seed everytime (would print 42 everytime otherwise)
     ticket = rand() %200 + 1;
 
-printf("|------------------------------------|\n");
-printf("|%-25s |\n", name.c_str());
-printf("|Section: %-1c                        |\n", letters[rand() % 4]);
-printf("|Seat: %d |\n", ticket);
-printf("|Price: $%d |\n", price);
-printf("|------------------------------------|\n");
+
+
+    cout << "|---------------|" << endl;
+    cout << "|Name: " << name << "\t|" << endl;
+    cout << "|Ticket: " << letters[index] << "\t|" << endl;
+    cout << "|Seat: " << ticket << "\t|" << endl;
+    cout << "|Price: $" << price << "\t|" << endl;
+    cout << "|---------------|" << endl;
 
     return 0;
 }

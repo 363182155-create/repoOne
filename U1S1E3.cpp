@@ -23,14 +23,12 @@ int main()
     cout << "What year would you like to project to? ";
     cin >> projectedYear;
 
-    int population = projectedYear - currentYear;
-    int projectedPopulation = animals * pow(2, population);
+    int population = pow(2, projectedYear - currentYear) * animals;
 
-    cout << "Type of animal: " << name << endl;
+    cout << "\nType of animal: " << name << endl;
     cout << "Starting Amount: " << animals << endl;
     cout << "Current Year: " << currentYear << endl;
     cout << "Projected Year: " << projectedYear << endl;
-    cout << "Projected Population: " << projectedPopulation << endl;
-
+    cout << "Projected Population: " << population << endl;
 
 }

@@ -28,7 +28,7 @@ int main()
     cout << "Hey there, " << name << "! How's it going?" << endl;
 
     cout << "|---------------------------------|" << endl;
-    printf("| Name: %-25s |\n", name.c_str());
+    printf("| Name: %-25s |\n", name.c_str()); 
     printf("| Letter: %-1c                       |\n", letters[index]);
     printf("| Seat: %03d                       |\n", ticket);
     printf("| Price: $%2d                      |\n", price);

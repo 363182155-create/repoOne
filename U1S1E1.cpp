@@ -16,7 +16,7 @@ int main()
 
     cout << "Hey there, " << name << "! How's it going?" << endl;
 
-    srand(time(0)); // so it doesnt start at the same seed everytime (would print 42 everytime otherwise)
+    srand(time(0)); 
     ticket = rand() %200 + 1;
 
 

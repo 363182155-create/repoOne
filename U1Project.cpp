@@ -1,6 +1,7 @@
 #include <iostream>
 #include <string>
 #include <vector>
+#include <algorithm>
 
 using namespace std;
 
@@ -11,6 +12,20 @@ void displayTasks(const vector<string>& tasks)
     for (const auto& task : tasks)
     {
         cout << "• " << task << endl;
+    }
+}
+
+void addTask(vector<string>& tasks, const string& task)
+{
+    tasks.push_back(task);
+}
+
+void removeTask(vector<string>& tasks, const string& task)
+{
+    auto remove = find(tasks.begin(), tasks.end(), task);
+    if (remove != tasks.end())
+    {
+        tasks.erase(remove);
     }
 }
 

@@ -7,6 +7,8 @@
 
 using namespace std;
 
+//====================================================================================
+
 void displayTasks(const vector<string>& tasks)
 {
     cout << "+-- TODO LIST FOR TODAY --+  " << endl;
@@ -17,11 +19,14 @@ void displayTasks(const vector<string>& tasks)
     }
 }
 
+//------------------------------------------------------------------------------------------
 
 void addTask(vector<string>& tasks, const string& task)
 {
     tasks.push_back(task);
 }
+
+//------------------------------------------------------------------------------------------
 
 void removeTask(vector<string>& tasks, const string& task)
 {
@@ -32,14 +37,16 @@ void removeTask(vector<string>& tasks, const string& task)
     }
 }
 
+//------------------------------------------------------------------------------------------
 
 int main()
 {
-    
 int choice;
 string tasks;
 vector<string> taskList;
 bool running = true;
+
+//------------------------------------------------------------------------------------------
 
 cout << "Enter your tasks (separated by commas): ";
 getline(cin, tasks);
@@ -71,6 +78,8 @@ cout << "6. Reset the list" << endl;
 cin >> choice;
 cin.ignore(numeric_limits<streamsize>::max(), '\n'); // Clear the input buffer
 
+//-----------------------------------------------------------------------------------
+
     switch (choice)
     {
         case 1:
@@ -81,6 +90,9 @@ cin.ignore(numeric_limits<streamsize>::max(), '\n'); // Clear the input buffer
             addTask(taskList, newTask);
             break;
         }
+
+//------------------------------------------------------------------------------------
+
         case 2:
         {
             string taskToRemove;
@@ -90,17 +102,25 @@ cin.ignore(numeric_limits<streamsize>::max(), '\n'); // Clear the input buffer
             break;
         }
     
+//------------------------------------------------------------------------------------
+
         case 3: //read tasks
         {
             displayTasks(taskList);
             break;
         }
+
+//----------------------------------------------------------------------------------
+
         case 4: //end tasks
         {
             running = false;
             cout << "You are done" << endl;
             break;
         }
+
+//----------------------------------------------------------------------------------
+
         case 5: //sort alphabetically
         {
             if (taskList.size() < 2)
@@ -116,7 +136,7 @@ cin.ignore(numeric_limits<streamsize>::max(), '\n'); // Clear the input buffer
                     string left = taskList[t];
                     string right = taskList[t + 1];
 
-                    for (char& alpha : left)
+                    for (char& alpha : left) 
                     {
                         alpha = tolower(static_cast<unsigned char>(alpha));
                     }
@@ -136,6 +156,9 @@ cin.ignore(numeric_limits<streamsize>::max(), '\n'); // Clear the input buffer
             displayTasks(taskList);
             break;
         }
+
+//--------------------------------------------------------------------------------------
+
         case 6: //reset the list
         {
             taskList.clear();
@@ -157,6 +180,8 @@ cin.ignore(numeric_limits<streamsize>::max(), '\n'); // Clear the input buffer
         }
     }
 }
+
+//------------------------------------------------------------------------------------------
 
 displayTasks(taskList);
 

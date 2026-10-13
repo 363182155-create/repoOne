@@ -9,9 +9,7 @@
 
 using namespace std;
 
-
 //====================================================================================
-
 
 void displayTasks(const vector<string>& tasks)
 {
@@ -29,7 +27,6 @@ void displayTasks(const vector<string>& tasks)
         cout << "• " << task << endl;
     }
 }
-
 
 //------------------------------------------------------------------------------------------
 
@@ -93,9 +90,7 @@ void sortTasks(vector<string>& tasks) //alphabetically
     }
 }
 
-
 //------------------------------------------------------------------------------------------
-
 
 void sortTasksReverse(vector<string>& tasks)
 {
@@ -104,7 +99,6 @@ void sortTasksReverse(vector<string>& tasks)
         cout << "List is already sorted or empty." << endl;
         return;
     }
-
 
     for (size_t i = 0; i < tasks.size(); i++)
     {
@@ -134,9 +128,7 @@ void sortTasksReverse(vector<string>& tasks)
     }
 }
 
-
 //------------------------------------------------------------------------------------------
-
 
 void saveFile(const string& filename, const vector<string>& tasks)
 {
@@ -156,9 +148,7 @@ void saveFile(const string& filename, const vector<string>& tasks)
     }
 }
 
-
 //------------------------------------------------------------------------------------------
-
 
 void loadFile(vector<string>& tasks, const string& filename)
 {
@@ -183,9 +173,7 @@ void loadFile(vector<string>& tasks, const string& filename)
     cout << "List loaded from " << filename << "\n";
 }
 
-
 //------------------------------------------------------------------------------------------
-
 
 void splitTasks(const string& input, vector<string>& taskList)
 {
@@ -373,4 +361,3 @@ cin.ignore(numeric_limits<streamsize>::max(), '\n'); // Clear the input buffer
 
 displayTasks(taskList);
 }
-

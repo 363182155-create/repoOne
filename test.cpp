@@ -61,7 +61,6 @@ void sortTasks(vector<string>& tasks) //alphabetically
         return;
     }
 
-
     for (size_t i = 0; i < tasks.size(); i++)
     {
         for (size_t s = 0; s < tasks.size() - 1 - i; s++)
@@ -69,18 +68,21 @@ void sortTasks(vector<string>& tasks) //alphabetically
             string left = tasks[s];
             string right = tasks[s + 1];
 
-
-            for (char& alpha : left)
+            for (int j = 0; j < left.length(); j++)
             {
-                alpha = tolower(static_cast<unsigned char>(alpha));
+                if (left[j] >= 'A' && left[j] <= 'Z')
+                {
+                    left[j] = left[j] + 32;
+                }
             }
 
-
-            for (char& alpha : right)
+            for (int j = 0; j < right.length(); j++)
             {
-                alpha = tolower(static_cast<unsigned char>(alpha));
+                if (right[j] >= 'A' && right[j] <= 'Z')
+                {
+                    right[j] = right[j] + 32;
+                }
             }
-
 
             if (left > right)
             {
@@ -107,18 +109,21 @@ void sortTasksReverse(vector<string>& tasks)
             string left = tasks[s];
             string right = tasks[s + 1];
 
-
-            for (char& alpha : left)
+            for (int j = 0; j < left.length(); j++)
             {
-                alpha = tolower(static_cast<unsigned char>(alpha));
+                if (left[j] >= 'A' && left[j] <= 'Z')
+                {
+                    left[j] = left[j] + 32;
+                }
             }
 
-
-            for (char& alpha : right)
+            for (int j = 0; j < right.length(); j++)
             {
-                alpha = tolower(static_cast<unsigned char>(alpha));
+                if (right[j] >= 'A' && right[j] <= 'Z')
+                {
+                    right[j] = right[j] + 32;
+                }
             }
-
 
             if (left < right)
             {
@@ -173,44 +178,55 @@ void loadFile(vector<string>& tasks, const string& filename)
     cout << "List loaded from " << filename << "\n";
 }
 
+
 //------------------------------------------------------------------------------------------
 
-void splitTasks(const string& input, vector<string>& taskList)
+void addAndPriority(vector<string>& tasks)
 {
-    taskList.clear();
-    size_t start = 0;
+    string task;
 
-    while (start <= input.size())
+    cout << "\nEnter each task on a new line. Type 'Done' when finished.\n";
+
+    while (true)
     {
-        size_t end = input.find(',', start);
-        if (end == string::npos)
+        cout << "Task: ";
+        getline(cin, task);
+
+        if (task.empty())
         {
-            end = input.size();
+            continue;
         }
 
-        string task = input.substr(start, end - start);
-
-        while (!task.empty() && isspace(static_cast<unsigned char>(task.front())))
+        while (!task.empty() && task[0] == ' ')
         {
-            task.erase(task.begin());
+            task.erase(0, 1);
         }
 
-        while (!task.empty() && isspace(static_cast<unsigned char>(task.back())))
+        while (!task.empty() && task[task.length() - 1] == ' ')
         {
-            task.pop_back();
+            task.erase(task.length() - 1, 1);
         }
 
-        if (!task.empty())
+        if (task.empty())
         {
-            taskList.push_back(task);
+            continue;
         }
 
-        if (end == input.size())
+        string lowered = task;
+        for (int i = 0; i < lowered.length(); i++)
+        {
+            if (lowered[i] >= 'A' && lowered[i] <= 'Z')
+            {
+                lowered[i] = lowered[i] + 32;
+            }
+        }
+
+        if (lowered == "done")
         {
             break;
         }
 
-        start = end + 1;
+        addTask(tasks, task);
     }
 }
 
@@ -225,9 +241,7 @@ bool running = true;
 
 //------------------------------------------------------------------------------------------
 
-cout << "Enter your tasks (separated by commas): ";
-getline(cin, tasks);
-splitTasks(tasks, taskList);
+addAndPriority(taskList);
 displayTasks(taskList);
 
 //-----------------------------------------------------------------------------------------
@@ -348,9 +362,7 @@ cin.ignore(numeric_limits<streamsize>::max(), '\n'); // Clear the input buffer
         case 9: //reset the list
         {
             taskList.clear();
-            cout << "\nEnter your new tasks (separated by commas): ";
-            getline(cin, tasks);
-            splitTasks(tasks, taskList);
+            addAndPriority(taskList);
             displayTasks(taskList);
             break;
         }

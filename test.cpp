@@ -6,39 +6,37 @@
 #include <cctype>
 #include <chrono>
 #include <fstream>
+#include <climits>
 
 using namespace std;
 
 //====================================================================================
 
-void displayTasks(const vector<string>& tasks)
+void displayTasks(const vector<string>& tasks) //Function to display tasks
 {
-    auto now = chrono::system_clock::now();
-    auto time = chrono::floor<chrono::seconds>(now);
+    auto now = chrono::system_clock::now(); // Get the current time
+    auto time = chrono::floor<chrono::seconds>(now); //Calculates the value as a readable time
     string red = "\033[1;31m";
     string reset = "\033[0m";
    
     cout << "\n+-- TODO LIST FOR TODAY --+  " << endl;
-    cout << red << "Current Local Time: " << chrono::current_zone()->to_local(time) << "\n" << reset;
+    cout << red << "Current Local Time: " << chrono::current_zone()->to_local(time) << "\n" << reset; //Sets timezone
 
 
     for (const auto& task : tasks)
     {
-        cout << "• " << task << endl;
+        cout << "• " << task << endl; //Displays the tasks in a bullet point format
     }
 }
 
 //------------------------------------------------------------------------------------------
-
 
 void addTask(vector<string>& tasks, const string& task)
 {
     tasks.push_back(task);
 }
 
-
 //------------------------------------------------------------------------------------------
-
 
 void removeTask(vector<string>& tasks, const string& task)
 {
@@ -49,9 +47,7 @@ void removeTask(vector<string>& tasks, const string& task)
     }
 }
 
-
 //------------------------------------------------------------------------------------------
-
 
 void sortTasks(vector<string>& tasks) //alphabetically
 {
@@ -94,7 +90,7 @@ void sortTasks(vector<string>& tasks) //alphabetically
 
 //------------------------------------------------------------------------------------------
 
-void sortTasksReverse(vector<string>& tasks)
+void sortTasksReverse(vector<string>& tasks) //reverse alphabetically
 {
     if (tasks.size() < 2)
     {
@@ -138,12 +134,14 @@ void sortTasksReverse(vector<string>& tasks)
 void saveFile(const string& filename, const vector<string>& tasks)
 {
     ofstream txtFile(filename); // ofstream is used to open the file to write in it
+
     if (txtFile.is_open())
     {
         for (const auto& entry : tasks)
         {
             txtFile << entry << "\n";
         }
+
         txtFile.close();
         cout << "List saved successfully to " << filename << "\n";
     }
@@ -157,7 +155,9 @@ void saveFile(const string& filename, const vector<string>& tasks)
 
 void loadFile(vector<string>& tasks, const string& filename)
 {
+    string line;
     ifstream inputFile(filename);
+
     if (!inputFile.is_open())
     {
         cout << "Error opening file for reading.\n";
@@ -165,7 +165,7 @@ void loadFile(vector<string>& tasks, const string& filename)
     }
 
     tasks.clear();
-    string line;
+
     while (getline(inputFile, line))
     {
         if (!line.empty())
@@ -181,14 +181,125 @@ void loadFile(vector<string>& tasks, const string& filename)
 
 //------------------------------------------------------------------------------------------
 
+int getPriority()
+{
+    string input;
+    int number;
+
+    while (true)
+    {
+        cout << "Priority number: ";
+        getline(cin, input);
+
+        try
+        {
+            number = stoi(input);
+
+            if (number >= 0)
+            {
+                return number;
+            }
+
+            cout << "Please enter a number that is 0 or bigger.\n";
+        }
+        catch (const invalid_argument&)
+        {
+            cout << "Please enter a valid number.\n";
+        }
+    }
+}
+
+//------------------------------------------------------------------------------------------
+
+int taskNumber(const string& task)
+{
+    size_t start = task.find('[');
+    size_t end = task.find(']');
+
+    if (start == string::npos || end == string::npos || end <= start)
+    {
+        return INT_MAX; // Return a large number if the format is incorrect
+    }
+
+    string value = task.substr(start + 1, end - start - 1);
+    return stoi(value);
+}
+
+string taskName(const string& task)
+{
+    size_t end = task.find(']');
+
+    if (end == string::npos)
+    {
+        return task;
+    }
+
+    return task.substr(end + 2);
+}
+
+
+
+void sortByPriority(vector<string>& tasks)
+{
+    if (tasks.size() < 2)
+    {
+        return;
+    }
+
+    for (int i = 0; i < tasks.size() - 1; i++)
+    {
+        for (int j = 0; j < tasks.size() - 1 - i; j++)
+        {
+            int leftNumber = taskNumber(tasks[j]);
+            int rightNumber = taskNumber(tasks[j + 1]);
+
+            string leftName = taskName(tasks[j]);
+            string rightName = taskName(tasks[j + 1]);
+
+            for (char& ch : leftName)
+            {
+                ch = tolower(ch);
+            }
+
+            for (char& ch : rightName)
+            {
+                ch = tolower(ch);
+            }
+
+            if (leftNumber > rightNumber || (leftNumber == rightNumber && leftName > rightName))
+            {
+                swap(tasks[j], tasks[j + 1]);
+            }
+        }
+    }
+
+    for (int i = 0; i < tasks.size(); i++)
+    {
+        tasks[i] = "[" + to_string(i + 1) + "] " + taskName(tasks[i]);
+    }
+}
+
+//------------------------------------------------------------------------------------------
+
+void sortTasksByPriority(vector<string>& tasks)
+{
+    sortByPriority(tasks);
+}
+
+//------------------------------------------------------------------------------------------
+
 void addAndPriority(vector<string>& tasks)
 {
     string task;
+    int priority;
+    string lowered = task;
 
     cout << "\nEnter each task on a new line. Type 'Done' when finished.\n";
 
     while (true)
     {
+        priority = getPriority();
+        
         cout << "Task: ";
         getline(cin, task);
 
@@ -212,7 +323,6 @@ void addAndPriority(vector<string>& tasks)
             continue;
         }
 
-        string lowered = task;
         for (int i = 0; i < lowered.length(); i++)
         {
             if (lowered[i] >= 'A' && lowered[i] <= 'Z')
@@ -226,7 +336,7 @@ void addAndPriority(vector<string>& tasks)
             break;
         }
 
-        addTask(tasks, task);
+        addTask(tasks, "[" + to_string(priority) + "] " + task);
     }
 }
 
@@ -258,6 +368,7 @@ cout << "6. Sort Reverse Alphabetically" << endl;
 cout << "7. Save to File" << endl;
 cout << "8. Load from File" << endl;
 cout << "9. Reset the list" << endl;
+cout << "10. Sort by Priority" << endl;
 
 cin >> choice;
 cin.ignore(numeric_limits<streamsize>::max(), '\n'); // Clear the input buffer
@@ -269,9 +380,12 @@ cin.ignore(numeric_limits<streamsize>::max(), '\n'); // Clear the input buffer
         case 1:
         {
             string newTask;
+            int priority;
+
             cout << "\nEnter the task to add: ";
             getline(cin, newTask);
-            addTask(taskList, newTask);
+            priority = getPriority();
+            addTask(taskList, "[" + to_string(priority) + "] " + newTask);
             break;
         }
 
@@ -363,6 +477,15 @@ cin.ignore(numeric_limits<streamsize>::max(), '\n'); // Clear the input buffer
         {
             taskList.clear();
             addAndPriority(taskList);
+            displayTasks(taskList);
+            break;
+        }
+
+//--------------------------------------------------------------------------------------
+
+        case 10: //sort by priority
+        {
+            sortTasksByPriority(taskList);
             displayTasks(taskList);
             break;
         }
